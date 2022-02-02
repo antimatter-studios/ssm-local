@@ -2,7 +2,9 @@
 
 ![CI](https://github.com/christhomas/cognito-local/workflows/CI/badge.svg)
 
-A _Good Enough_ offline emulator for [Amazon SSM Parameter Store](https://aws.amazon.com/ssm/).
+A _Good Enough_ offline emulator for [Amazon SSM Parameter Store](https://aws.amazon.com/systems-manager/features/#Parameter_Store).
+
+# DONT READ ANYTHING BELOW THIS LINE ;)
 
 <!-- toc -->
 

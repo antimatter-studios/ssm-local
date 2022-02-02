@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./lib",
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "ES2019"
+  },
+  "include": ["./setupTests.ts", "src/**/*.ts", "integration-tests/**/*.ts"],
+  "exclude": ["lib"]
+}
