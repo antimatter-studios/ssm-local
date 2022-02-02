@@ -86,6 +86,26 @@ export class InvalidParameterError extends ServiceError {
   }
 }
 
+export class ValidationError extends ServiceError {
+  public constructor(message = "The parameter data was invalid") {
+    super("ValidationError", message);
+  }
+}
+
+export class ParameterAlreadyExistsError extends ServiceError {
+  public constructor(
+    message = "The parameter already exists. To overwrite this value, set the overwrite option in the request to true."
+  ) {
+    super("ParameterAlreadyExistsError", message);
+  }
+}
+
+export class ParameterNotFound extends ServiceError {
+  public constructor(message = "The parameter was not found.") {
+    super("ParameterNotFound", message);
+  }
+}
+
 export const unsupported = (message: string, res: Response, logger: Logger) => {
   logger.error(`SSM Local unsupported feature: ${message}`);
   return res.status(500).json({
