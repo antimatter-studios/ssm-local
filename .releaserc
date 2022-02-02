@@ -12,7 +12,7 @@
       "dockerImage": "christhomas/ssm-local"
     }],
     ["@semantic-release/git", {
-      "assets": ["CHANGELOG.md"],
+      "assets": ["CHANGELOG.md"]
     }]
   ]
 }
