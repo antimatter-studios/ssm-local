@@ -109,7 +109,8 @@
       }],
       ["@codedependant/semantic-release-docker", {
         "dockerLogin": false,
-        "dockerImage": "christhomas/ssm-local"
+        "dockerImage": "christhomas/ssm-local",
+        "dockerRegistry": "ghcr.io"
       }],
       ["@semantic-release/git", {
         "assets": ["CHANGELOG.md"]
