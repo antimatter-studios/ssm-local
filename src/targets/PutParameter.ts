@@ -9,7 +9,7 @@ import {
   SsmServiceInterface,
   SsmParameterInterface,
 } from "../services/SsmService";
-import { Context, Target } from "./router";
+import { Context, Target } from "../server/Router";
 
 export type PutParameterTarget = Target<
   PutParameterRequest,

@@ -1,13 +1,13 @@
 import { Logger } from "../log";
 import { Services } from "../services";
 import { UnsupportedError } from "../errors";
-import { PutParameter } from "./PutParameter";
-import { GetParameter } from "./GetParameter";
-import { GetParameters } from "./GetParameters";
-import { DeleteParameter } from "./DeleteParameter";
-import { DeleteParameters } from "./DeleteParameters";
-import { DescribeParameters } from "./DescribeParameters";
-import { ListTagsForResource } from "./listTagsForResource";
+import { PutParameter } from "../targets/PutParameter";
+import { GetParameter } from "../targets/GetParameter";
+import { GetParameters } from "../targets/GetParameters";
+import { DeleteParameter } from "../targets/DeleteParameter";
+import { DeleteParameters } from "../targets/DeleteParameters";
+import { DescribeParameters } from "../targets/DescribeParameters";
+import { ListTagsForResource } from "../targets/ListTagsForResource";
 
 export const Targets = {
   PutParameter,

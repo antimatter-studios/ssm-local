@@ -3,7 +3,7 @@ import { DateClock } from "../services";
 import { InMemoryCache } from "../services/dataStore/cache";
 import { StormDBDataStoreFactory } from "../services/dataStore/stormDb";
 import { SsmService } from "../services/SsmService";
-import { Router } from "../targets/router";
+import { Router } from "./Router";
 import { loadConfig } from "./config";
 import { createServer, Server } from "./server";
 
@@ -32,8 +32,9 @@ export const createDefaultServer = async (
     new InMemoryCache()
   );
 
-  let ssmDataStore = await dataStoreFactory.get(ctx, 'ssm');
-  if(!ssmDataStore) ssmDataStore = await dataStoreFactory.create(ctx, 'ssm', {});
+  let ssmDataStore = await dataStoreFactory.get(ctx, "ssm");
+  if (!ssmDataStore)
+    ssmDataStore = await dataStoreFactory.create(ctx, "ssm", {});
 
   const ssm = new SsmService(ssmDataStore);
 

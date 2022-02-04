@@ -5,7 +5,7 @@ import * as http from "http";
 import type { Logger } from "pino";
 import * as uuid from "uuid";
 import { ServiceError, unsupported, UnsupportedError } from "../errors";
-import { Router } from "../targets/router";
+import { Router } from "./Router";
 import Pino from "pino-http";
 
 export interface ServerOptions {

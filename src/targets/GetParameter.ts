@@ -1,17 +1,17 @@
-import {
-  GetParameterRequest,
-  GetParameterResult,
-} from "aws-sdk/clients/ssm";
+import { GetParameterRequest, GetParameterResult } from "aws-sdk/clients/ssm";
 import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
-import { Target } from "./router";
+import { Target } from "../server/Router";
 
-export type GetParameterTarget = Target<GetParameterRequest, GetParameterResult>;
+export type GetParameterTarget = Target<
+  GetParameterRequest,
+  GetParameterResult
+>;
 
 export const GetParameter =
   ({ ssm }: Pick<Services, "ssm">): GetParameterTarget =>
   async (ctx, req) => {
-    ctx.logger.debug({req});
+    ctx.logger.debug({ req });
 
     const result = await ssm.get(ctx, req.Name);
 
@@ -31,6 +31,6 @@ export const GetParameter =
         LastModifiedDate: result.Metadata.LastModifiedDate,
         ARN: `arn:aws:ssm:${region}:${account_id}:parameter${result.Metadata.Name}`,
         DataType: result.Metadata.DataType,
-      }
+      },
     });
   };

@@ -4,17 +4,23 @@ import {
 } from "aws-sdk/clients/ssm";
 import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
-import { Target } from "./router";
+import { Target } from "../server/Router";
 
-export type ListTagsForResourceTarget = Target<ListTagsForResourceRequest, ListTagsForResourceResult>;
+export type ListTagsForResourceTarget = Target<
+  ListTagsForResourceRequest,
+  ListTagsForResourceResult
+>;
 
 export const ListTagsForResource =
-  ({ ssm, clock }: Pick<Services, "ssm" | "clock">): ListTagsForResourceTarget =>
+  ({
+    ssm,
+    clock,
+  }: Pick<Services, "ssm" | "clock">): ListTagsForResourceTarget =>
   async (ctx, req) => {
-    ctx.logger.debug({req});
+    ctx.logger.debug({ req });
     const result = await Promise.resolve([]);
 
-    if(!result){
+    if (!result) {
       throw new ResourceNotFoundError("Could not save parameter");
     }
 

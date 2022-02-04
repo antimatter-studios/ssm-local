@@ -4,7 +4,7 @@ import {
 } from "aws-sdk/clients/ssm";
 import { ParameterNotFound } from "../errors";
 import { Services } from "../services";
-import { Target } from "./router";
+import { Target } from "../server/Router";
 
 export type DeleteParameterTarget = Target<
   DeleteParameterRequest,
