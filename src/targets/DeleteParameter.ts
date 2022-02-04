@@ -2,9 +2,9 @@ import {
   DeleteParameterRequest,
   DeleteParameterResult,
 } from "aws-sdk/clients/ssm";
-import { ParameterNotFound } from "../errors";
 import { Services } from "../services";
 import { Target } from "../server/Router";
+import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
 
 export type DeleteParameterTarget = Target<
   DeleteParameterRequest,
@@ -19,7 +19,7 @@ export const DeleteParameter =
     const param = await ssm.get(ctx, req.Name);
 
     if (!param) {
-      throw new ParameterNotFound();
+      throw new ResourceNotFoundError();
     }
 
     const success = await ssm.delete(ctx, req.Name);

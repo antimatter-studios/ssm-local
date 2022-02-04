@@ -1,54 +1,70 @@
-/*
-import { newMockCognitoService } from "../__tests__/mockCognitoService";
-import { newMockUserPoolService } from "../__tests__/mockUserPoolService";
-import { TestContext } from "../__tests__/testContext";
-import * as TDB from "../__tests__/testDataBuilder";
-import { UserNotFoundError } from "../errors";
-import { UserPoolService } from "../services";
-import { AdminGetUser, AdminGetUserTarget } from "./adminGetUser";
+import { PutParameter, PutParameterTarget } from "./PutParameter";
+import { MockClock } from "../mocks/MockClock";
+import { MockContext } from "../mocks/MockContext";
+import { MockSsmService } from "../mocks/MockSsmService";
+import { MockSsmMetadata, MockSsmParameter } from "../mocks/MockSsmParameter";
+import { ParameterAlreadyExistsError } from "../errors/ParameterAlreadyExistsError";
 
-describe("AdminGetUser target", () => {
-  let adminGetUser: AdminGetUserTarget;
-  let mockUserPoolService: jest.Mocked<UserPoolService>;
+describe("PutParameter Target", () => {
+  let handler: PutParameterTarget;
+  const currentDate = new Date();
+  const clock = new MockClock(currentDate);
+  const ssm = MockSsmService();
 
   beforeEach(() => {
-    mockUserPoolService = newMockUserPoolService();
-    adminGetUser = AdminGetUser({
-      cognito: newMockCognitoService(mockUserPoolService),
+    handler = PutParameter({
+      ssm,
+      clock,
     });
   });
 
-  it("gets the user", async () => {
-    const existingUser = TDB.user();
+  it("succeeds to creates a new parameter", async () => {
+    const parameter = MockSsmParameter();
 
-    mockUserPoolService.getUserByUsername.mockResolvedValue(existingUser);
+    ssm.put.mockResolvedValue(parameter);
 
-    const result = await adminGetUser(TestContext, {
-      Username: existingUser.Username,
-      UserPoolId: "test",
+    const result = await handler(MockContext, {
+      Name: parameter.Metadata.Name as string,
+      Value: parameter.Value,
+      Type: parameter.Metadata.Type,
     });
 
     expect(result).toEqual({
-      Enabled: existingUser.Enabled,
-      UserAttributes: existingUser.Attributes,
-      UserCreateDate: new Date(existingUser.UserCreateDate),
-      UserLastModifiedDate: new Date(existingUser.UserLastModifiedDate),
-      Username: existingUser.Username,
-      UserStatus: existingUser.UserStatus,
+      Version: 1.0,
+      Tier: "STANDARD",
     });
   });
 
-  it("handles trying to get an invalid user", async () => {
-    const existingUser = TDB.user();
-
-    mockUserPoolService.getUserByUsername.mockResolvedValue(null);
+  it("fails to create a parameter that already exists with no overwrite flag", async () => {
+    const parameter = MockSsmParameter();
+    ssm.get.mockResolvedValue(parameter);
 
     await expect(
-      adminGetUser(TestContext, {
-        Username: existingUser.Username,
-        UserPoolId: "test",
+      handler(MockContext, {
+        Name: parameter.Metadata.Name as string,
+        Value: parameter.Value,
+        Type: parameter.Metadata.Type,
       })
-    ).rejects.toEqual(new UserNotFoundError("User does not exist"));
+    ).rejects.toEqual(new ParameterAlreadyExistsError());
+  });
+
+  it("succeeds to create a parameter that already exists with overwrite flag set", async () => {
+    const existingParameter = MockSsmParameter();
+    const compareMetaData = { Version: 10.1, Tier: "TESTING_METADATA_TIER" };
+    const updatedParameter = MockSsmParameter({
+      Metadata: MockSsmMetadata(compareMetaData),
+    });
+
+    ssm.get.mockResolvedValue(existingParameter);
+    ssm.put.mockResolvedValue(updatedParameter);
+
+    const result = await handler(MockContext, {
+      Name: existingParameter.Metadata.Name as string,
+      Value: existingParameter.Value,
+      Type: existingParameter.Metadata.Type,
+      Overwrite: true,
+    });
+
+    expect(result).toEqual(compareMetaData);
   });
 });
-*/

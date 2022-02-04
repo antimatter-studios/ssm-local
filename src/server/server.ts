@@ -4,9 +4,10 @@ import express from "express";
 import * as http from "http";
 import type { Logger } from "pino";
 import * as uuid from "uuid";
-import { ServiceError, unsupported, UnsupportedError } from "../errors";
 import { Router } from "./Router";
 import Pino from "pino-http";
+import { UnsupportedError } from "../errors/UnsupportedError";
+import { ServiceError } from "../errors/ServiceError";
 
 export interface ServerOptions {
   port: number;
@@ -98,7 +99,12 @@ export const createServer = (
             req.log.info("======");
           }
 
-          unsupported(ex.message, res, req.log);
+          req.log.error(`SSM Local unsupported feature: ${ex.message}`);
+          res.status(500).json({
+            code: "SSMLocal#Unsupported",
+            message: `SSM Local unsupported feature: ${ex.message}`,
+          });
+
           return;
         } else if (ex instanceof ServiceError) {
           req.log.warn(ex, `Error handling target: ${target}`);

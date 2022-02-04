@@ -2,9 +2,9 @@ import {
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
 } from "aws-sdk/clients/ssm";
-import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
 import { Target } from "../server/Router";
+import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
 
 export type ListTagsForResourceTarget = Target<
   ListTagsForResourceRequest,

@@ -1,6 +1,5 @@
-import { Logger } from "../log";
+import { LogService } from "../services/LogService";
 import { Services } from "../services";
-import { UnsupportedError } from "../errors";
 import { PutParameter } from "../targets/PutParameter";
 import { GetParameter } from "../targets/GetParameter";
 import { GetParameters } from "../targets/GetParameters";
@@ -8,6 +7,7 @@ import { DeleteParameter } from "../targets/DeleteParameter";
 import { DeleteParameters } from "../targets/DeleteParameters";
 import { DescribeParameters } from "../targets/DescribeParameters";
 import { ListTagsForResource } from "../targets/ListTagsForResource";
+import { UnsupportedError } from "../errors/UnsupportedError";
 
 export const Targets = {
   PutParameter,
@@ -21,7 +21,7 @@ export const Targets = {
 
 type TargetName = keyof typeof Targets;
 
-export type Context = { readonly logger: Logger };
+export type Context = { readonly logger: LogService };
 export type Target<Req extends {}, Res extends {}> = (
   ctx: Context,
   req: Req

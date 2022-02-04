@@ -1,15 +1,13 @@
 import { PutParameterRequest, PutParameterResult } from "aws-sdk/clients/ssm";
-import {
-  ParameterAlreadyExistsError,
-  ResourceNotFoundError,
-  ValidationError,
-} from "../errors";
-import { Clock, Services } from "../services";
+import { Services } from "../services";
 import {
   SsmServiceInterface,
   SsmParameterInterface,
 } from "../services/SsmService";
 import { Context, Target } from "../server/Router";
+import { ValidationError } from "../errors/ValidationError";
+import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
+import { ParameterAlreadyExistsError } from "../errors/ParameterAlreadyExistsError";
 
 export type PutParameterTarget = Target<
   PutParameterRequest,
@@ -18,23 +16,25 @@ export type PutParameterTarget = Target<
 
 async function createParameter(
   ssm: SsmServiceInterface,
-  clock: Clock,
   ctx: Context,
-  req: PutParameterRequest
+  Name: string,
+  Value: string,
+  Type: string | undefined,
+  LastModifiedDate: Date
 ): Promise<PutParameterResult> {
-  if (!req.Type) {
+  if (!Type) {
     throw new ValidationError(
       "A parameter type is required when you create a parameter."
     );
   }
 
   const newParameter: SsmParameterInterface = {
-    Value: req.Value,
+    Value,
     Metadata: {
-      Name: req.Name,
-      Type: req.Type,
+      Name,
+      Type,
       //KeyId: "TODO",
-      LastModifiedDate: clock.get(),
+      LastModifiedDate,
       //LastModifiedUser: "TODO-the-arn",
       //Description: "TODO",
       //AllowedPattern: "TODO",
@@ -47,7 +47,7 @@ async function createParameter(
   };
 
   ctx.logger.debug({ newParameter });
-  const result = await ssm.put(ctx, req.Name, newParameter);
+  const result = await ssm.put(ctx, Name, newParameter);
 
   if (!result) {
     throw new ResourceNotFoundError("Could not save parameter");
@@ -61,18 +61,20 @@ async function createParameter(
 
 async function updateParameter(
   ssm: SsmServiceInterface,
-  clock: Clock,
   ctx: Context,
-  req: PutParameterRequest,
+  name: string,
+  value: string,
+  date: Date,
+  overwrite: boolean | undefined,
   param: SsmParameterInterface
 ): Promise<PutParameterResult> {
   // Overwrite was not set, so throw exception
-  if (!req.Overwrite) {
+  if (!overwrite) {
     throw new ParameterAlreadyExistsError();
   }
 
-  param.Value = req.Value;
-  param.Metadata.LastModifiedDate = clock.get();
+  param.Value = value;
+  param.Metadata.LastModifiedDate = date;
 
   if (param.Metadata.Version) {
     param.Metadata.Version = param.Metadata.Version + 1;
@@ -80,7 +82,7 @@ async function updateParameter(
     param.Metadata.Version = 1;
   }
 
-  const result = await ssm.put(ctx, req.Name, param);
+  const result = await ssm.put(ctx, name, param);
 
   return {
     Version: result?.Metadata.Version,
@@ -93,9 +95,19 @@ export const PutParameter =
   async (ctx, req) => {
     // Check whether parameter exists first, if yes, try to update it
     const existingParameter = await ssm.get(ctx, req.Name);
+    const now = clock.get();
+
     if (existingParameter) {
-      return updateParameter(ssm, clock, ctx, req, existingParameter);
+      return updateParameter(
+        ssm,
+        ctx,
+        req.Name,
+        req.Value,
+        now,
+        req.Overwrite,
+        existingParameter
+      );
     } else {
-      return createParameter(ssm, clock, ctx, req);
+      return createParameter(ssm, ctx, req.Name, req.Value, req.Type, now);
     }
   };
