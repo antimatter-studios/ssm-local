@@ -16,6 +16,7 @@ export type DescribeParametersTarget = Target<
 export const DescribeParameters =
   ({ ssm }: Pick<Services, "ssm">): DescribeParametersTarget =>
   async (ctx, req) => {
+    console.log({ req });
     const all = await ssm.all(ctx);
 
     if (!all) {
