@@ -9,21 +9,16 @@ A _Good Enough_ offline emulator for [Amazon SSM Parameter Store](https://aws.am
 <!-- toc -->
 
 - [Supported Features](#supported-features)
-  - [Lambda triggers](#lambda-triggers)
 - [Usage](#usage)
   - [via Docker](#via-docker)
+  - [via Docker Compose](#via-docker-compose)
   - [via Node](#via-node)
-  - [Using a different port](#using-a-different-port)
+  - [Using a different host or port](#using-a-different-host-or-port)
   - [Updating your application](#updating-your-application)
-  - [Creating your first User Pool](#creating-your-first-user-pool)
-- [Configuration](#configuration)
-  - [HTTPS endpoints with self-signed certificates](#https-endpoints-with-self-signed-certificates)
-  - [User Pools and Clients](#user-pools-and-clients)
+  - [Creating your first parameter](#creating-your-first-parameter)
 - [Known Limitations](#known-limitations)
-- [Multi-factor authentication](#multi-factor-authentication)
-- [Confirmation codes](#confirmation-codes)
 - [Advanced](#advanced)
-  - [Debugging Cognito Local](#debugging-cognito-local)
+  - [Debugging SSM Local](#debugging-ssm-local)
 
 <!-- tocstop -->
 
@@ -31,404 +26,169 @@ A _Good Enough_ offline emulator for [Amazon SSM Parameter Store](https://aws.am
 
 | Feature                          | Support              |
 | -------------------------------- | -------------------- |
-| AddCustomAttributes              | ❌                   |
-| AdminAddUserToGroup              | ❌                   |
-| AdminConfirmSignUp               | ✅                   |
-| AdminCreateUser                  | 🕒 (partial support) |
-| AdminDeleteUser                  | ✅                   |
-| AdminDeleteUserAttributes        | ✅                   |
-| AdminDisableProviderForUser      | ❌                   |
-| AdminDisableUser                 | ❌                   |
-| AdminEnableUser                  | ❌                   |
-| AdminForgetDevice                | ❌                   |
-| AdminGetDevice                   | ❌                   |
-| AdminGetUser                     | ✅                   |
-| AdminInitiateAuth                | 🕒 (partial support) |
-| AdminLinkProviderForUser         | ❌                   |
-| AdminListDevices                 | ❌                   |
-| AdminListGroupsForUser           | ❌                   |
-| AdminListUserAuthEvents          | ❌                   |
-| AdminRemoveUserFromGroup         | ❌                   |
-| AdminResetUserPassword           | ❌                   |
-| AdminRespondToAuthChallenge      | ❌                   |
-| AdminSetUserMFAPreference        | ❌                   |
-| AdminSetUserPassword             | ✅                   |
-| AdminSetUserSettings             | ❌                   |
-| AdminUpdateAuthEventFeedback     | ❌                   |
-| AdminUpdateDeviceStatus          | ❌                   |
-| AdminUpdateUserAttributes        | ✅                   |
-| AdminUserGlobalSignOut           | ❌                   |
-| AssociateSoftwareToken           | ❌                   |
-| ChangePassword                   | ✅                   |
-| ConfirmDevice                    | ❌                   |
-| ConfirmForgotPassword            | 🕒 (partial support) |
-| ConfirmSignUp                    | 🕒 (partial support) |
-| CreateGroup                      | ✅                   |
-| CreateIdentityProvider           | ❌                   |
-| CreateResourceServer             | ❌                   |
-| CreateUserImportJob              | ❌                   |
-| CreateUserPool                   | ✅                   |
-| CreateUserPoolClient             | 🕒 (partial support) |
-| CreateUserPoolDomain             | ❌                   |
-| DeleteGroup                      | ❌                   |
-| DeleteIdentityProvider           | ❌                   |
-| DeleteResourceServer             | ❌                   |
-| DeleteUser                       | ✅                   |
-| DeleteUserAttributes             | ✅                   |
-| DeleteUserPool                   | ❌                   |
-| DeleteUserPoolClient             | ❌                   |
-| DeleteUserPoolDomain             | ❌                   |
-| DescribeIdentityProvider         | ❌                   |
-| DescribeResourceServer           | ❌                   |
-| DescribeRiskConfiguration        | ❌                   |
-| DescribeUserImportJob            | ❌                   |
-| DescribeUserPool                 | ❌                   |
-| DescribeUserPoolClient           | ✅                   |
-| DescribeUserPoolDomain           | ❌                   |
-| ForgetDevice                     | ❌                   |
-| ForgotPassword                   | 🕒 (partial support) |
-| GetCSVHeader                     | ❌                   |
-| GetDevice                        | ❌                   |
-| GetGroup                         | ❌                   |
-| GetIdentityProviderByIdentifier  | ❌                   |
-| GetSigningCertificate            | ❌                   |
-| GetUICustomization               | ❌                   |
-| GetUser                          | ✅                   |
-| GetUserAttributeVerificationCode | ✅                   |
-| GetUserPoolMfaConfig             | ❌                   |
-| GlobalSignOut                    | ❌                   |
-| InitiateAuth                     | 🕒 (partial support) |
-| ListDevices                      | ❌                   |
-| ListGroups                       | ✅¹                  |
-| ListIdentityProviders            | ❌                   |
-| ListResourceServers              | ❌                   |
-| ListTagsForResource              | ❌                   |
-| ListUserImportJobs               | ❌                   |
-| ListUserPoolClients              | ❌                   |
-| ListUserPools                    | ✅¹                  |
-| ListUsers                        | ✅¹                  |
-| ListUsersInGroup                 | ❌                   |
-| ResendConfirmationCode           | ❌                   |
-| RespondToAuthChallenge           | 🕒 (partial support) |
-| RevokeToken                      | 🕒 (partial support) |
-| SetRiskConfiguration             | ❌                   |
-| SetUICustomization               | ❌                   |
-| SetUserMFAPreference             | ❌                   |
-| SetUserPoolMfaConfig             | ❌                   |
-| SetUserSettings                  | ❌                   |
-| SignUp                           | 🕒 (partial support) |
-| StartUserImportJob               | ❌                   |
-| StopUserImportJob                | ❌                   |
-| TagResource                      | ❌                   |
-| UntagResource                    | ❌                   |
-| UpdateAuthEventFeedback          | ❌                   |
-| UpdateDeviceStatus               | ❌                   |
-| UpdateGroup                      | ❌                   |
-| UpdateIdentityProvider           | ❌                   |
-| UpdateResourceServer             | ❌                   |
-| UpdateUserAttributes             | ✅                   |
-| UpdateUserPool                   | ❌                   |
-| UpdateUserPoolClient             | ❌                   |
-| UpdateUserPoolDomain             | ❌                   |
-| VerifySoftwareToken              | ❌                   |
-| VerifyUserAttribute              | ✅                   |
+| GetParameter                     | ✅                   |
+| GetParameters                    | ✅                   |
+| DeleteParameter                  | ✅                   |
+| DeleteParameters                 | ✅                   |
+| DescribeParameters               | ✅                   |
+| ListTagsForResource              | 🕒 (partial support) |
+| PutParameter                     | ✅                   |
+| GetParameterHistory              | ❌                   |
+| GetParametersByPath              | ❌                   |
+| LabelParameterVersion            | ❌                   |
+| UnlabelParameterVersion          | ❌                   |
+
 
 > ¹ does not support pagination or query filters, all results and attributes will be returned in the first request.
-
-Additional supported features:
-
-- JWKs verification
-
-### Lambda triggers
-
-cognito-local can emulate Cognito's [Lambda Triggers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html)
-by either invoking a real Lambda in an AWS account or a Lambda running on your local machine (via any tool which
-supports the `LambdaInvoke` functionality, for example
-[serverless-offline](https://github.com/dherault/serverless-offline)).
-
-To configure a Lambda Trigger, modify your [configuration file](#configuration) to include a `TriggerFunctions` object
-with a key for the Trigger and the value as your Lambda function name.
-
-```json
-{
-  "TriggerFunctions": {
-    "CustomMessage": "my-function-name"
-  }
-}
-```
-
-If you're using local invoke, you will also need to modify the `LambdaClient.endpoint` configuration to tell
-cognito-local how to connect to your local Lambda server:
-
-```json
-{
-  "LambdaClient": {
-    "endpoint": "http://host:port"
-  },
-  "TriggerFunctions": {
-    "CustomMessage": "my-local-function-name"
-  }
-}
-```
-
-> If you're running cognito-local in Docker and your local Lambda functions on your host, you may need to use the Docker
-> local networking hostname as your endpoint. For example, on my Mac I use `http://host.docker.internal:3002`.
-
-#### Supported Lambda Triggers
-
-| Trigger                     | Operation                            | Support |
-| --------------------------- | ------------------------------------ | ------- |
-| CreateAuthChallenge         | \*                                   | ❌      |
-| CustomEmailSender           | \*                                   | ❌      |
-| CustomMessage               | AdminCreateUser                      | ✅      |
-| CustomMessage               | Authentication                       | ✅      |
-| CustomMessage               | ForgotPassword                       | ✅      |
-| CustomMessage               | ResendCode                           | ❌      |
-| CustomMessage               | SignUp                               | ✅      |
-| CustomMessage               | UpdateUserAttribute                  | ✅      |
-| CustomMessage               | VerifyUserAttribute                  | ✅      |
-| DefineAuthChallenge         | \*                                   | ❌      |
-| PostAuthentication          | PostAuthentication_Authentication    | ✅      |
-| PostConfirmation            | ConfirmForgotPassword                | ✅      |
-| PostConfirmation            | ConfirmSignUp                        | ✅      |
-| PreAuthentication           | \*                                   | ❌      |
-| PreSignUp                   | PreSignUp_AdminCreateUser            | ❌      |
-| PreSignUp                   | PreSignUp_ExternalProvider           | ❌      |
-| PreSignUp                   | PreSignUp_SignUp                     | ✅      |
-| PreTokenGeneration          | TokenGeneration_AuthenticateDevice   | ❌      |
-| PreTokenGeneration          | TokenGeneration_Authentication       | ✅      |
-| PreTokenGeneration          | TokenGeneration_HostedAuth           | ❌      |
-| PreTokenGeneration          | TokenGeneration_NewPasswordChallenge | ❌      |
-| PreTokenGeneration          | TokenGeneration_RefreshTokens        | ✅      |
-| UserMigration               | Authentication                       | ✅      |
-| UserMigration               | ForgotPassword                       | ❌      |
-| VerifyAuthChallengeResponse | \*                                   | ❌      |
-
-#### Known limitations
-
-1. Incomplete support for triggers
-2. Triggers can only be configured globally and not per-pool
-
 ## Usage
 
 ### via Docker
 
-    docker run --publish 9229:9229 jagregory/cognito-local:latest
+    docker run --publish 9230:9230 christhomas/ssm-local:latest
 
-Cognito Local will now be listening on `http://localhost:9229`.
+SSM Local will now be listening on `http://0.0.0.0:9230`.
 
-To persist your database between runs, mount the `/app/.cognito` volume to your host machine:
+To persist your ssm data between runs, mount the `/app/data` volume to your host machine:
 
-    docker run --publish 9229:9229 --volume $(pwd)/.cognito:/app/.cognito jagregory/cognito-local:latest
+    docker run --publish 9230:9230 --volume $(pwd)/data:/app/data christhomas/ssm-local:latest
+
+### via Docker Compose
+
+    docker compose up --build
+
+SSM Local will not be listening on `http://0.0.0.0:9230`
 
 ### via Node
 
-    npm install --save-dev cognito-local
-    yarn add --dev cognito-local
+  Running via Node is a good way to debug and find problems, fix them live, add features etc.
 
-    # if node_modules/.bin is in your $PATH
-    cognito-local
-    # OR
-    yarn cognito-local
-    # OR
-    npx cognito-local
+    npm install --save-dev
+    yarn add --dev
 
-Cognito Local will now be listening on `http://localhost:9229`.
+    # to run in the local terminal
+    yarn start:watch
 
-### Using a different port
+SSM Local will now be listening on `http://0.0.0.0:9230`.
 
-cognito-local runs on port `9229` by default. If you would like to use a different port, you can set the `PORT`
-environment variable:
+### Using a different host or port
 
-`PORT=4000 cognito-local`
+ssm-local runs on host `0.0.0.0` and port `9230` by default. If you would like to use a different port, you can set the `HOST` and `PORT` environment variable:
+
+`HOST=localhost PORT=4000 yarn start:watch`
 
 If you're running in Docker, you can also rebind the [published ports](https://docs.docker.com/config/containers/container-networking/#published-ports)
 when you run:
 
-`docker run -p4000:9229 jagregory/cognito-local`
+`docker run -p4000:9230 christhomas/ssm-local`
 
 Or combine the two approaches by [setting an environment variable](https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file)
 when you run:
 
-`docker run -p4000:4000 -e PORT=4000 jagregory/cognito-local`
+`docker run -p4000:4000 -e PORT=4000 christhomas/ssm-local`
 
 The same can be done in docker-compose with [environment variables](https://docs.docker.com/compose/environment-variables/#set-environment-variables-in-containers)
 and [port binding](https://docs.docker.com/compose/networking/) in compose.
 
 ### Updating your application
 
-You will need to update your AWS code to use the local address for Cognito's endpoint. For example, if you're using
-amazon-cognito-identity-js you can update your `CognitoUserPool` usage to override the endpoint:
+You will need to update your AWS code to use the local address for SSM Locals endpoint. For example, if you're using `aws-sdk` in the `js` language you can update your `SSM` usage to override the endpoint:
 
 ```js
-new CognitoUserPool({
+new AWS.SSM({
   /* ... normal options ... */
-  endpoint: "http://localhost:9229/",
+  endpoint: "http://0.0.0.0:9230/",
 });
 ```
 
 You only want to do this when you're running locally on your development machine.
 
-### Creating your first User Pool
+### Creating your first parameter
 
-Once you've started Cognito Local the easiest way to create a new User Pool is with the aws-cli:
+Once you've started SSM Local the easiest way to create a new SSM Parameter is with the aws-cli:
 
 ```shell
-aws --endpoint http://localhost:9229 cognito-idp create-user-pool --pool-name MyUserPool
+aws --endpoint http://0.0.0.0:9230 ssm put-parameter --name /some/key --value "This is an example" --type "String"
 ```
 
-> Replace the `--endpoint` with whatever host and port you're running Cognito Local on.
+It should output something like this:
 
-If you run `ls .cognito/db` you will now see a new file called `local_???.json` where `???` is the `Id` from the output
-of the command you just ran.
-
-You may commit this file to version control if you would like all your team to use a common User Pool when developing,
-or you can have each team member run the above command when they first start using Cognito Local.
-
-## Configuration
-
-You do not need to supply a config unless you need to customise the behaviour of Congito Local. If you are using Lambda
-triggers with local Lambdas, you will definitely need to override `LambdaClient.endpoint` at a minimum.
-
-Before starting Cognito Local, create a config file if one doesn't already exist:
-
-    mkdir .cognito && echo '{}' > .cognito/config.json
-
-You can edit that `.cognito/config.json` and add any of the following settings:
-
-| Setting                                    | Type       | Default                 | Description                                                 |
-| ------------------------------------------ | ---------- | ----------------------- | ----------------------------------------------------------- |
-| `LambdaClient`                             | `object`   |                         | Any setting you would pass to the AWS.Lambda Node.js client |
-| `LambdaClient.credentials.accessKeyId`     | `string`   | `local`                 |                                                             |
-| `LambdaClient.credentials.secretAccessKey` | `string`   | `local`                 |                                                             |
-| `LambdaClient.endpoint`                    | `string`   | `local`                 |                                                             |
-| `LambdaClient.region`                      | `string`   | `local`                 |                                                             |
-| `TokenConfig.IssuerDomain`                 | `string`   | `http://localhost:9229` | Issuer domain override                                      |
-| `TriggerFunctions`                         | `object`   | `{}`                    | Trigger name to Function name mapping                       |
-| `TriggerFunctions.CustomMessage`           | `string`   |                         | CustomMessage local lambda function name                    |
-| `TriggerFunctions.PostAuthentication`      | `string`   |                         | PostAuthentication local lambda function name               |
-| `TriggerFunctions.PostConfirmation`        | `string`   |                         | PostConfirmation local lambda function name                 |
-| `TriggerFunctions.PreSignUp`               | `string`   |                         | PostConfirmation local lambda function name                 |
-| `TriggerFunctions.PreTokenGeneration`      | `string`   |                         | PreTokenGeneration local lambda function name               |
-| `TriggerFunctions.UserMigration`           | `string`   |                         | PreSignUp local lambda function name                        |
-| `UserPoolDefaults`                         | `object`   |                         | Default behaviour to use for the User Pool                  |
-| `UserPoolDefaults.MfaConfiguration`        | `string`   |                         | MFA type                                                    |
-| `UserPoolDefaults.UsernameAttributes`      | `string[]` | `["email"]`             | Username alias attributes                                   |
-
-The default config is:
-
-```json
+```shell
 {
-  "LambdaClient": {
-    "credentials": {
-      "accessKeyId": "local",
-      "secretAccessKey": "local"
-    },
-    "region": "local"
-  },
-  "TokenConfig": {
-    "IssuerDomain": "http://localhost:9229"
-  },
-  "TriggerFunctions": {},
-  "UserPoolDefaults": {
-    "UsernameAttributes": ["email"]
-  }
+    "Version": 1,
+    "Tier": "Standard"
 }
 ```
 
-### HTTPS endpoints with self-signed certificates
+> Replace the `--endpoint` with whatever host and port you're running SSM Local on.
 
-If you need your Lambda endpoint to be HTTPS with a self-signed certificate, you will need to disable certificate
-verification in Node for Cognito Local. The easiest way to do this is to run Cognito Local with the
-`NODE_TLS_REJECT_UNAUTHORIZED` environment variable.
+If you are running from `yarn` then a file `data/ssm.json` will be created, you can view the contents by using this command `cat data/ssm.json`. You can verify the parameter created is in fact being stored.
 
-    NODE_TLS_REJECT_UNAUTHORIZED=0 cognito-local
-    docker run --env NODE_TLS_REJECT_UNAUTHORIZED=0 ...
+You can use this command to the aws cli to get back the information you set
 
-### User Pools and Clients
+```shell
+aws --endpoint http://0.0.0.0:9230 ssm get-parameter --name /some/key
+```
 
-User Pools are stored in `.cognito/db/$userPoolId.json`. As not all API features are supported yet, you'll likely find
-yourself needing to manually edit this file to update the User Pool config or users. If you do modify this file, you
-will need to restart Cognito Local.
+and it should output something like
 
-User Pool Clients are stored in `.cognito/db/clients.json`. You can create new User Pool Clients using the
-`CreateUserPoolClient` API.
+```shell
+{
+    "Parameter": {
+        "Name": "/some/key",
+        "Type": "String",
+        "Value": "This is an example",
+        "Version": 1,
+        "LastModifiedDate": "2022-02-04T18:52:33+01:00",
+        "ARN": "arn:aws:ssm:eu-west-1:112233445566:parameter/some/key",
+        "DataType": "text"
+    }
+}
+```
+
+You may commit the `data/ssm.json` to version control if you would like all your team to use a common set of SSM parameters when developing,
 
 ## Known Limitations
 
 - Many features are missing
-- Users can't be disabled
-- Only `USER_PASSWORD_AUTH` flow is supported
-- Not all Lambda triggers are supported
-
-## Multi-factor authentication
-
-There is limited support for Multi-Factor Authentication in Cognito Local. Currently, if a User Pool is configured to
-have a `MfaConfiguration` of `OPTIONAL` or `ON` **and** a user has an `MFAOption` of `SMS` then Cognito Local will
-follow the MFA flows. If a user does not have a `phone_number` attribute or any other type of MFA is used, Cognito Local
-will fail.
-
-## Confirmation codes
-
-When a user is prompted for a code of some kind (confirming their account, multi-factor auth), Cognito Local will write
-a message to the console with their confirmation code instead of emailing it to the user.
-
-For example:
-
-```
-╭───────────────────────────────────────────────────────╮
-│                                                       │
-│   Confirmation Code Delivery                          │
-│                                                       │
-│   Username:    c63651ae-59c6-4ede-ae7d-a8400ff65e8d   │
-│   Destination: example@example.com                    │
-│   Code:        3520                                   │
-│                                                       │
-╰───────────────────────────────────────────────────────╯
-```
-
-If a Custom Message lambda is configured, the output of the function invocation will be printed in the console too (verbosely!).
-
 ## Advanced
 
-### Debugging Cognito Local
+### Debugging SSM Local
 
-There's a few different ways you can debug Cognito Local. _Currently, it's best to debug Cognito Locally via Node, and
-not with Docker_.
+There's a few different ways you can debug SSM Local. _Currently, it's best to debug Cognito Locally via Node, and not with Docker_.
 
 #### Verbose logging
 
 If you just need more logs to understand what Cognito Local is doing, you can use the `DEBUG` environment variable.
 
 ```shell
-DEBUG=1 yarn start
+DEBUG=1 yarn start:watch
 ```
 
 Which will print extra debug logs to the terminal (with `{...}` replaced by detailed information):
 
 ```
-[1639034724411] INFO: NONE NONE Cognito Local running on http://127.0.0.1:9229
-[1639034724872] DEBUG: 7f53abbd CreateUserPool start {...}
-[1639034724873] DEBUG: 7f53abbd CreateUserPool CognitoServiceImpl.createUserPool {...}
-[1639034724873] DEBUG: 7f53abbd CreateUserPool UserPoolServiceImpl.create {...}
-[1639034724873] DEBUG: 7f53abbd CreateUserPool createDataStore {...}
-[1639034724873] DEBUG: 7f53abbd CreateUserPool Creating new data store {...}
-[1639034724874] DEBUG: 7f53abbd CreateUserPool DataStore.save {...}
-[1639034724876] DEBUG: 7f53abbd CreateUserPool DataStore.get {...}
-[1639034724877] DEBUG: 7f53abbd CreateUserPool end {...}
-[1639034724882] DEBUG: 7f53abbd NONE request completed {...}
+[1643981253427] DEBUG: NONE NONE loadConfig
+GET DEBUGGING:  [] { key: 'config' }
+[1643981253469] DEBUG: NONE NONE StormDBDataStoreFactory.create {"id":"config"}
+[1643981253570] DEBUG: NONE NONE Creating new data store {"id":"config"}
+[1643981253595] DEBUG: NONE NONE DataStore.save {"store":{}}
+[1643981253626] DEBUG: NONE NONE DataStore.getRoot
+GET DEBUGGING:  [] { key: 'ssm' }
+[1643981253645] DEBUG: NONE NONE Loaded config {"config":{"path":"data"}}
+[1643981253648] DEBUG: NONE NONE StormDBDataStoreFactory.get {"id":"ssm"}
+[1643981253668] DEBUG: NONE NONE Opening existing data store: data/ssm.json {"id":"ssm"}
+| [1643981253797] INFO: NONE NONE SSM Local running on http://0.0.0.0:9230
 ```
 
 #### VSCode debugger
 
 There's a launch configuration included in the repo at [.vscode/launch.json](./.vscode/launch.json).
 
-If you open `Run and Debug` and start the `CognitoLocal` configuration it will start Cognito Local and attach the
+If you open `Run and Debug` and start the `SSMLocal` configuration it will start Cognito Local and attach the
 debugger.
 
 Put a breakpoint in [src/bin/start.ts](./src/bin/start.ts) or in the target for the API call you want to debug
-(e.g. [src/targets/createUserPool.ts](./src/targets/createUserPool.ts)) and run your code that uses Cognito Local or a
-CLI command.
+(e.g. [src/targets/GetParameter.ts](./src/targets/GetParameter.ts)) and run your code that uses SSM Local or a CLI command.
 
 #### WebStorm debugger
 
