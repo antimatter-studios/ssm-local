@@ -59,8 +59,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn semantic-release
-        with:
           tags: ghcr.io/${{ github.repository }}:latest
+      - run: yarn semantic-release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
