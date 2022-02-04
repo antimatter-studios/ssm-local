@@ -2,11 +2,11 @@ version: "3"
 
 services:
   ssm:
-    image: christhomas/ssm-local:latest
+    image: ghcr.io/christhomas/ssm-local:latest
     build:
       context: .
       cache_from:
-        - christhomas/ssm-local:latest
+        - ghcr.io/christhomas/ssm-local:latest
     ports:
       - 9230:9230
     volumes:
