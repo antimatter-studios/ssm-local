@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  ssm:
+    image: christhomas/ssm-local:latest
+    build:
+      context: .
+      cache_from:
+        - christhomas/ssm-local:latest
+    ports:
+      - 9230:9230
+    volumes:
+      - $PWD/data:/app/data
+    environment:
+      - DEBUG=1

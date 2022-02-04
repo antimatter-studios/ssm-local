@@ -1,4 +1,4 @@
-FROM node:14-alpine as builder
+FROM node:alpine as builder
 WORKDIR /app
 
 # dependencies
@@ -11,13 +11,13 @@ ADD src src
 # bundle
 RUN yarn esbuild src/bin/start.ts --outdir=lib --platform=node --target=node14 --bundle
 
-FROM node:14-alpine
+FROM node:alpine
 WORKDIR /app
 COPY --from=builder /app/lib .
 
 # bindings
-EXPOSE 9229
+EXPOSE 9230
 ENV HOST 0.0.0.0
-ENV PORT 9229
+ENV PORT 9230
 VOLUME /app/data
 ENTRYPOINT ["node", "/app/start.js"]
