@@ -1,6 +1,6 @@
 {
   "name": "ssm-local",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "license": "MIT",
   "bin": "lib/bin/start.js",
   "main": "lib/index.js",
@@ -9,10 +9,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "rm -rf lib && tsc --emitDeclarationOnly --project tsconfig.build.json && esbuild $(find src -name '*.ts' ! -name '*.test.ts' ! -path '*/__tests__/*') --outdir=lib --platform=node --target=node14 --format=cjs && cp -r src/keys lib/keys",
-    "format": "prettier --write src/**/*.ts integration-tests/**/*.ts",
-    "integration-test": "jest --config integration-tests/jest.config.js",
-    "integration-test:watch": "jest --config integration-tests/jest.config.js --watch",
+    "build": "rm -rf lib && tsc --emitDeclarationOnly --project tsconfig.build.json && esbuild $(find src -name '*.ts' ! -name '*.test.ts') --outdir=lib --platform=node --target=node14 --format=cjs",
+    "format": "prettier --write src/**/*.ts",
     "lint": "eslint src/**/*.ts && tsc --noEmit",
     "start": "SSM_DEVMODE=1 ts-node src/bin/start.ts",
     "start:debug": "SSM_DEVMODE=1 DEBUG=1 node -r ts-node/register --inspect=9230 --enable-source-maps src/bin/start.ts",
