@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/christhomas/ssm-local/compare/v1.0.0...v1.0.1) (2022-02-04)
+
+
+### Bug Fixes
+
+* add a tag which includes the ghcr.io address ([a94327d](https://github.com/christhomas/ssm-local/commit/a94327d367e8f8eed22f15991cdb7a24bb4cb850))
+* add a tag which includes the ghcr.io address ([a1c71cb](https://github.com/christhomas/ssm-local/commit/a1c71cb8c12869624a7bdc3a03629d65c73628ef))
+
 # 1.0.0 (2022-02-04)
 
 
