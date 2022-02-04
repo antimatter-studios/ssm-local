@@ -1,10 +1,18 @@
 # SSM Local
 
-![CI](https://github.com/christhomas/cognito-local/workflows/CI/badge.svg)
+![CI](https://github.com/christhomas/ssm-local/workflows/CI/badge.svg)
 
 A _Good Enough_ offline emulator for [Amazon SSM Parameter Store](https://aws.amazon.com/systems-manager/features/#Parameter_Store).
 
-# DONT READ ANYTHING BELOW THIS LINE ;)
+## Credits
+
+This is a refitted version of the Cognito Local project that James Gregory wrote. I took the codebase, stripped out the Cognito implementation, added SSM Parameter Store API Functions, then cleaned and scrubbed the codebase. 
+
+[Cognito Local](https://github.com/jagregory/cognito-local)
+
+Without his amazing work. This project would not have been possible. Thank you James!
+
+## Table of Contents
 
 <!-- toc -->
 
@@ -154,11 +162,11 @@ You may commit the `data/ssm.json` to version control if you would like all your
 
 ### Debugging SSM Local
 
-There's a few different ways you can debug SSM Local. _Currently, it's best to debug Cognito Locally via Node, and not with Docker_.
+There's a few different ways you can debug SSM Local. _Currently, it's best to debug SSM Locally via Node, and not with Docker_.
 
 #### Verbose logging
 
-If you just need more logs to understand what Cognito Local is doing, you can use the `DEBUG` environment variable.
+If you just need more logs to understand what SSM Local is doing, you can use the `DEBUG` environment variable.
 
 ```shell
 DEBUG=1 yarn start:watch
@@ -184,7 +192,7 @@ GET DEBUGGING:  [] { key: 'ssm' }
 
 There's a launch configuration included in the repo at [.vscode/launch.json](./.vscode/launch.json).
 
-If you open `Run and Debug` and start the `SSMLocal` configuration it will start Cognito Local and attach the
+If you open `Run and Debug` and start the `SSMLocal` configuration it will start SSM Local and attach the
 debugger.
 
 Put a breakpoint in [src/bin/start.ts](./src/bin/start.ts) or in the target for the API call you want to debug
@@ -193,21 +201,20 @@ Put a breakpoint in [src/bin/start.ts](./src/bin/start.ts) or in the target for 
 #### WebStorm debugger
 
 There's a WebStorm run configuration included in the repo at
-[.idea/runConfigurations/CognitoLocal.xml](./.idea/runConfigurations/CognitoLocal.xml).
+[.idea/runConfigurations/SSMLocal.xml](./.idea/runConfigurations/SSMLocal.xml).
 
-A `CognitoLocal` entry should appear in the Run Configurations drop-down in the toolbar, which you can Run or Debug.
+A `SSMLocal` entry should appear in the Run Configurations drop-down in the toolbar, which you can Run or Debug.
 Alternatively, the `Run > Debug` menu will let you pick a Run Configuration to launch.
 
 Put a breakpoint in [src/bin/start.ts](./src/bin/start.ts) or in the target for the API call you want to debug
-(e.g. [src/targets/createUserPool.ts](./src/targets/createUserPool.ts)) and run your code that uses Cognito Local or a
-CLI command.
+(e.g. [src/targets/createUserPool.ts](./src/targets/GetParameter.ts)) and run your code that uses SSM Local or a CLI command.
 
 #### Chrome DevTools
 
-> Note: due to a poor choice of ports on my part, Chrome will spam Cognito Local with HTTP requests if you have the
-> NodeJS DevTools open. I'll change the default port for Cognito Local at some point to fix this.
+> Note: due to a poor choice of ports on my part, Chrome will spam SSM Local with HTTP requests if you have the
+> NodeJS DevTools open. I'll change the default port for SSM Local at some point to fix this.
 
-Launch Cognito Local using the `start:debug` script:
+Launch SSM Local using the `start:debug` script:
 
 ```shell
 yarn start:debug
@@ -215,7 +222,4 @@ yarn start:debug
 
 This will configure NodeJS to start the inspector on port `9230`.
 
-Open Chrome and navigate to `chrome://inspect`. Click the `Open dedicated DevTools for Node` link which will open a new
-DevTools window. You can then open the Sources tab and browse to a Cognito Local file, or press `Cmd+P` or `Ctrl+P` to
-open the file navigator and open `src/bin/start.ts` or a target you want to debug then place a breakpoint and run your
-code that uses Cognito Local or a CLI command.
+Open Chrome and navigate to `chrome://inspect`. Click the `Open dedicated DevTools for Node` link which will open a new DevTools window. You can then open the Sources tab and browse to a SSM Local file, or press `Cmd+P` or `Ctrl+P` to open the file navigator and open `src/bin/start.ts` or a target you want to debug then place a breakpoint and run your code that uses SSM Local or a CLI command.
