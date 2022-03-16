@@ -8,9 +8,9 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-latest
-    name: Build
+    name: Pipeline
     timeout-minutes: 5
 
     steps:
