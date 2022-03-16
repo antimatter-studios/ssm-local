@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/christhomas/ssm-local/compare/v1.0.2...v1.0.3) (2022-02-04)
+
+
+### Bug Fixes
+
+* set the official image name in the docker-compose file ([8ea4929](https://github.com/christhomas/ssm-local/commit/8ea4929bc6ea475bf28a1f341bc6c3554d2d786e))
+
 ## [1.0.2](https://github.com/christhomas/ssm-local/compare/v1.0.1...v1.0.2) (2022-02-04)
 
 
