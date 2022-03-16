@@ -5,4 +5,5 @@ export const MockDataStore = (): jest.Mocked<DataStore> => ({
   get: jest.fn(),
   getRoot: jest.fn(),
   set: jest.fn(),
+  filter: jest.fn(),
 });
