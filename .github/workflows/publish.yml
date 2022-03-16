@@ -5,6 +5,8 @@ on:
     branches: [main]
     types: [completed]
     workflows: [CI]
+  workflow_dispatch:
+    branches: [main]
 
 jobs:
   # Why do we need to build here as well as in the main CI pipeline? Because the actions/download-artifact action
