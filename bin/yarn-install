@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+echo "Checking Packages"
+if [ "${RUN_NPM}" = "false" ]; then
+    echo "\n${BLK}${YEL}\n\n\tPackage Installation was skipped, please run it yourself\t\n${RST}\n\n"
+else
+    yarn --frozen-lockfile
+    echo "\n${BLK}${GRN}\n\n\tPackage Installation should have completed successfully\t\n${RST}\n\n"
+fi

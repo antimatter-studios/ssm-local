@@ -3,7 +3,7 @@ import {
   DeleteParameterResult,
 } from "aws-sdk/clients/ssm";
 import { Services } from "../services";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
 import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
 
 export type DeleteParameterTarget = Target<

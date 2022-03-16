@@ -2,8 +2,7 @@ import {
   ListTagsForResourceRequest,
   ListTagsForResourceResult,
 } from "aws-sdk/clients/ssm";
-import { Services } from "../services";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
 import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
 
 export type ListTagsForResourceTarget = Target<
@@ -12,11 +11,7 @@ export type ListTagsForResourceTarget = Target<
 >;
 
 export const ListTagsForResource =
-  ({
-    ssm,
-    clock,
-  }: Pick<Services, "ssm" | "clock">): ListTagsForResourceTarget =>
-  async (ctx, req) => {
+  (): ListTagsForResourceTarget => async (ctx, req) => {
     ctx.logger.debug({ req });
     const result = await Promise.resolve([]);
 

@@ -1,34 +1,9 @@
 import { LogService } from "../services/LogService";
 import { Services } from "../services";
-import { PutParameter } from "../targets/PutParameter";
-import { GetParameter } from "../targets/GetParameter";
-import { GetParameters } from "../targets/GetParameters";
-import { DeleteParameter } from "../targets/DeleteParameter";
-import { DeleteParameters } from "../targets/DeleteParameters";
-import { DescribeParameters } from "../targets/DescribeParameters";
-import { ListTagsForResource } from "../targets/ListTagsForResource";
+import { Targets, isSupportedTarget } from "../targets/Target";
 import { UnsupportedError } from "../errors/UnsupportedError";
 
-export const Targets = {
-  PutParameter,
-  GetParameter,
-  GetParameters,
-  DeleteParameter,
-  DeleteParameters,
-  DescribeParameters,
-  ListTagsForResource,
-} as const;
-
-type TargetName = keyof typeof Targets;
-
 export type Context = { readonly logger: LogService };
-export type Target<Req extends {}, Res extends {}> = (
-  ctx: Context,
-  req: Req
-) => Promise<Res>;
-
-export const isSupportedTarget = (name: string): name is TargetName =>
-  Object.keys(Targets).includes(name);
 
 // eslint-disable-next-line
 export type Route = (ctx: Context, req: any) => Promise<any>;

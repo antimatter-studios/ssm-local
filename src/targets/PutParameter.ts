@@ -4,7 +4,8 @@ import {
   SsmServiceInterface,
   SsmParameterInterface,
 } from "../services/SsmService";
-import { Context, Target } from "../server/Router";
+import { Context } from "../services/context";
+import { Target } from "./Target";
 import { ValidationError } from "../errors/ValidationError";
 import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
 import { ParameterAlreadyExistsError } from "../errors/ParameterAlreadyExistsError";

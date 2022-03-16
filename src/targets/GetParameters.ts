@@ -5,7 +5,7 @@ import {
 } from "aws-sdk/clients/ssm";
 import { Services } from "../services";
 import { SsmParameterInterface } from "../services/SsmService";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
 import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
 
 export type GetParametersTarget = Target<

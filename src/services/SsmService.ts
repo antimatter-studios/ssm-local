@@ -11,6 +11,11 @@ export interface SsmParameterInterface {
 export interface SsmServiceInterface {
   all(ctx: Context): Promise<SsmParameterInterface[]>;
   get(ctx: Context, key: string): Promise<SsmParameterInterface | null>;
+  getByPath(
+    ctx: Context,
+    path: string,
+    recursive: boolean | undefined
+  ): Promise<SsmParameterInterface[]>;
   put(
     ctx: Context,
     key: string,
@@ -46,6 +51,18 @@ export class SsmService implements SsmServiceInterface {
     ctx.logger.debug("SsmService.get");
 
     return await this.dataStore.get<SsmParameterInterface>(ctx, key);
+  }
+
+  public async getByPath(
+    ctx: Context,
+    path: string,
+    recursive: boolean | undefined
+  ): Promise<SsmParameterInterface[]> {
+    ctx.logger.debug("SsmService.getByPath", { path, recursive });
+
+    return await this.dataStore.filter(ctx, path, (k: string) =>
+      k.startsWith(path)
+    );
   }
 
   public async put(

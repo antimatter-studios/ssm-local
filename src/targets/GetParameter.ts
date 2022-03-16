@@ -1,7 +1,7 @@
 import { GetParameterRequest, GetParameterResult } from "aws-sdk/clients/ssm";
 import { Services } from "../services";
-import { Target } from "../server/Router";
-import { ResourceNotFoundError } from "../errors/ResourceNotFoundError";
+import { Target } from "./Target";
+import { ParameterNotFoundError } from "../errors/ParameterNotFoundError";
 
 export type GetParameterTarget = Target<
   GetParameterRequest,
@@ -16,7 +16,7 @@ export const GetParameter =
     const result = await ssm.get(ctx, req.Name);
 
     if (!result) {
-      throw new ResourceNotFoundError();
+      throw new ParameterNotFoundError();
     }
 
     const region = "eu-west-1";

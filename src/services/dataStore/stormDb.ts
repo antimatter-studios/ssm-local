@@ -45,9 +45,21 @@ export class StormDBDataStore implements DataStore {
     ctx.logger.debug({ store: this.db.value() }, "DataStore.save");
     await this.db.save();
   }
+
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  async filter<T, S extends T>(
+    ctx: Context,
+    key: string,
+    func: any
+  ): Promise<T[]> {
+    ctx.logger.debug({ key }, "DataStore.filter");
+    const values = await this.db.value();
+    return Object.keys(values)
+      .filter(func)
+      .map((k) => values[k]);
+  }
 }
 
-const mkdir = promisify(fs.mkdir);
 const unlink = promisify(fs.unlinkSync);
 const access = promisify(fs.access);
 
@@ -110,10 +122,7 @@ export class StormDBDataStoreFactory implements DataStoreFactory {
     fs.mkdirSync(this.directory, { recursive: true });
   }
 
-  public has(
-    ctx: Context,
-    id: string
-  ): boolean {
+  public has(ctx: Context, id: string): boolean {
     ctx.logger.debug({ id }, "StormDBDataStoreFactory.has");
 
     const filename = `${this.directory}/${id}.json`;

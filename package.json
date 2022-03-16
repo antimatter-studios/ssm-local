@@ -20,6 +20,11 @@
     "semantic-release": "semantic-release",
     "prepare": "husky install"
   },
+  "docker-dev-tools": {
+    "scripts": {
+      "start-ssm-dev": "DEBUG=1 HOST=0.0.0.0 PORT=9230 yarn start:watch"
+    }
+  },
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",
     "@codedependant/semantic-release-docker": "^3.1.2",

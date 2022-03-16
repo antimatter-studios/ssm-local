@@ -3,7 +3,7 @@ import {
   DeleteParametersResult,
 } from "aws-sdk/clients/ssm";
 import { Services } from "../services";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
 
 export type DeleteParametersTarget = Target<
   DeleteParametersRequest,
