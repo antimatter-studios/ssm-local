@@ -1,6 +1,6 @@
 # SSM Local
 
-![CI](https://github.com/christhomas/ssm-local/workflows/CI/badge.svg)
+[![pipeline](https://github.com/antimatter-studios/ssm-local/actions/workflows/pipeline.yml/badge.svg)](https://github.com/antimatter-studios/ssm-local/actions/workflows/pipeline.yml)
 
 A _Good Enough_ offline emulator for [Amazon SSM Parameter Store](https://aws.amazon.com/systems-manager/features/#Parameter_Store).
 
