@@ -1,0 +1,45 @@
+name: pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request_target:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      
+      - name: Install packages
+        run: yarn install
+
+      - name: Run Typescript Checks
+        run: yarn lint
+        
+      - name: Run Tests
+        run: yarn test
+
+      - name: Build Node App
+        run: yarn build
+
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker Container
+        run: yarn semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
