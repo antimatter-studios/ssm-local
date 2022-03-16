@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/antimatter-studios/ssm-local/compare/v1.1.0...v1.2.0) (2022-03-16)
+
+
+### Features
+
+* trying manual triggers ([4861091](https://github.com/antimatter-studios/ssm-local/commit/48610913d9edcebf36bcefe55a875d0f0a779049))
+* trying manual triggers ([fb7df7b](https://github.com/antimatter-studios/ssm-local/commit/fb7df7b7f154191e7b6d586aee44ed31c15991a0))
+* trying manual triggers ([7b4308e](https://github.com/antimatter-studios/ssm-local/commit/7b4308ed70fedc0e2e56abaaa467e036be4742ea))
+
 # [1.1.0](https://github.com/antimatter-studios/ssm-local/compare/v1.0.3...v1.1.0) (2022-03-16)
 
 
