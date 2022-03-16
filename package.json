@@ -28,7 +28,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",
     "@codedependant/semantic-release-docker": "^4.0.0",
-    "@commitlint/cli": "^16.1.0",
+    "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^15.0.0",
     "@jest/globals": "^27.5.0",
     "@semantic-release/changelog": "^6.0.1",
