@@ -1,3 +1,21 @@
+# [1.1.0](https://github.com/antimatter-studios/ssm-local/compare/v1.0.3...v1.1.0) (2022-03-16)
+
+
+### Bug Fixes
+
+* unit tests ([adef58c](https://github.com/antimatter-studios/ssm-local/commit/adef58c9af7f975b92422d45031e5dc24d319338))
+* unit tests ([afdf66a](https://github.com/antimatter-studios/ssm-local/commit/afdf66ae312f0c2b563f68222f378decc63de125))
+* update repository urls ([d113eed](https://github.com/antimatter-studios/ssm-local/commit/d113eed98a0f1623a68aacf67c311fefbdb2ca76))
+* update repository urls ([b47d6da](https://github.com/antimatter-studios/ssm-local/commit/b47d6daae7790ad571cd84e26424cc1154a1262d))
+
+
+### Features
+
+* add workflow_dispatch ([3eea31e](https://github.com/antimatter-studios/ssm-local/commit/3eea31e7e5bef8c719759484c2bc2ffa9b285aa7))
+* trying manual triggers ([4bf453f](https://github.com/antimatter-studios/ssm-local/commit/4bf453f432dcc4678ad94309ce976ee07338dad7))
+* trying manual triggers ([3562802](https://github.com/antimatter-studios/ssm-local/commit/35628024fb395bb500ff00842737ba3656fe354f))
+* trying manual triggers ([716e800](https://github.com/antimatter-studios/ssm-local/commit/716e800e94ab11341c0acd8a989f8260a0cb1af3))
+
 ## [1.0.3](https://github.com/christhomas/ssm-local/compare/v1.0.2...v1.0.3) (2022-02-04)
 
 
