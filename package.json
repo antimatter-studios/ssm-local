@@ -19,7 +19,7 @@
     "test:watch": "jest --watch",
     "semantic-release": "semantic-release",
     "prepare": "husky install"
-  },
+  }, 
   "docker-dev-tools": {
     "scripts": {
       "start-ssm-dev": "DEBUG=1 HOST=0.0.0.0 PORT=9230 yarn start:watch"
