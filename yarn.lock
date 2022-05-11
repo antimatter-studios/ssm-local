@@ -1830,10 +1830,10 @@ autolinker@~0.28.0:
   dependencies:
     gulp-header "^1.7.1"
 
-aws-sdk@^2.1070.0:
-  version "2.1070.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1070.0.tgz#e7a27c34ed3a92776aa9128ed3469cb94bba9655"
-  integrity sha512-tkmuycoJ9k0qF1iq03iqyhevxP3l0OlrnUxjd0x8nZ9Ko1TGjyj0yJS4Vbd4r5RBpKUwRqedB7TAyZ/71mcZKw==
+aws-sdk@^2.1132.0:
+  version "2.1132.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1132.0.tgz#0cb615e97db5a5133914ba0f2bdc8ea10eef4069"
+  integrity sha512-NPDesfTrNx8UMQ5VuosQNlFFFhswJ8cGVcVltZBXKVl1kW0BCp52XQBySSruIznaRX7vG6Ir2+nox0NdL05qBQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
